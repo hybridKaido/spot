@@ -38,18 +38,59 @@ int write_to_ppm(char* filePath)
     return 0;
 }
 
+void spot_setpixel(int x, int y, Pixel color)
+{
+    canvas[y*C_WIDTH + x] = color;
+}
+
+
 int spot_fill(Pixel color)
 {
     for(int y = 0; y < C_HEIGHT; y++)
     {
         for(int x = 0; x < C_WIDTH; x++)
         {
-            canvas[y*C_WIDTH + x].r = color.r;
-            canvas[y*C_WIDTH + x].g = color.g;
-            canvas[y*C_WIDTH + x].b = color.b;
+            spot_setpixel(x, y, color);
         }
     }
     return 0;
+}
+
+void spot_fillrect(int posx, int posy, int w, int h, Pixel color)
+{
+    for(int y = 0; y < C_HEIGHT; y++)
+    {
+            for(int x = 0;x < C_WIDTH; x++)
+            {
+                if(x >= posx && x <= posx+w)
+                {
+                    if(y >= posy && y <= posy+h)
+                    {
+                        spot_setpixel(x, y, color);
+                    }
+                }
+            }   
+    }
+}
+
+void spot_fillcircle(int posx, int posy, int r, Pixel color)
+{
+    for(int y = 0; y < C_HEIGHT; y++)
+    {
+            for(int x = 0;x < C_WIDTH; x++)
+            {
+                if(x >= posx-r && x <= posx+r)
+                {
+                    if(y >= posy-r && y <= posy+r)
+                    {
+                        if((x-posx)*(x-posx) + (y-posy)*(y-posy) < r*r)
+                        {
+                            spot_setpixel(x, y, color);
+                        }
+                    }
+                }
+            }   
+    }
 }
 
 
